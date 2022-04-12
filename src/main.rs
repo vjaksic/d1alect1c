@@ -44,7 +44,7 @@ fn main() {
             println!();
         }
 
-        // input player move (white)
+        // input player move
         let mut move_piece = String::new();
         println!("?move? > ");
         std::io::stdin().read_line(&mut move_piece).unwrap();
@@ -60,21 +60,24 @@ fn main() {
         f_dest -= 'a' as usize;
         let r_dest = (move_piece.chars().nth(3).unwrap().to_digit(10).unwrap() - 1) as usize;
         
-
-
         // decide if legal
-        for r in 0..7 {
-            for f in 0..7 {
-                let mut piece = board[r][f];
-                if piece == 'p' // pawn
-                {
-
-                }
+        let mut legal = false;
+        let piece = board[r_src][f_src];
+        if piece == 'P' {
+            if (r_dest == r_src + 1)  && (f_dest == f_src)
+            {
+                legal = true;
             }
         }
 
-        board[r_dest][f_dest] = board[r_src][f_src];
-        board[r_src][f_src] = '_';
+        if legal {
+            board[r_dest][f_dest] = board[r_src][f_src];
+            board[r_src][f_src] = '_';
+        }
+        else {
+            println!("ILLEGAL MOVE!")
+        }
+
 
     }
 }
