@@ -52,20 +52,29 @@ fn main() {
             break;
         }
 
-        let mut file_from = move_piece.chars().nth(0).unwrap() as usize;
-        file_from -= 'a' as usize;
-        let rank_from = (move_piece.chars().nth(1).unwrap().to_digit(10).unwrap() - 1) as usize;
+        let mut f_src = move_piece.chars().nth(0).unwrap() as usize;
+        f_src -= 'a' as usize;
+        let r_src = (move_piece.chars().nth(1).unwrap().to_digit(10).unwrap() - 1) as usize;
 
-        let mut file_to = move_piece.chars().nth(2).unwrap() as usize;
-        file_to -= 'a' as usize;
-        let rank_to = (move_piece.chars().nth(3).unwrap().to_digit(10).unwrap() - 1) as usize;
+        let mut f_dest = move_piece.chars().nth(2).unwrap() as usize;
+        f_dest -= 'a' as usize;
+        let r_dest = (move_piece.chars().nth(3).unwrap().to_digit(10).unwrap() - 1) as usize;
         
-        board[rank_to][file_to] = board[rank_from][file_from];
-        board[rank_from][file_from] = '_';
 
-        // respond (black)
 
-        // find all legal moves
+        // decide if legal
+        for r in 0..7 {
+            for f in 0..7 {
+                let mut piece = board[r][f];
+                if piece == 'p' // pawn
+                {
+
+                }
+            }
+        }
+
+        board[r_dest][f_dest] = board[r_src][f_src];
+        board[r_src][f_src] = '_';
 
     }
 }
