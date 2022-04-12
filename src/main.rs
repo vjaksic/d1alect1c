@@ -2,11 +2,14 @@
 //use std::thread::sleep;
 use std::io::stdout;
 use std::io::Write;
+use std::usize;
 use rand::seq::SliceRandom;
+
+type Board = [[char; 8]; 8];
 
 fn main() {
 
-    let mut board: [[char; 8]; 8] = [['_'; 8]; 8];
+    let mut board: Board = [['_'; 8]; 8];
 
     board[0][0] = 'R';
     board[0][1] = 'N';
@@ -60,10 +63,10 @@ fn main() {
             f_dest -= 'a' as usize;
             let r_dest = (move_piece.chars().nth(3).unwrap().to_digit(10).unwrap() - 1) as usize;
 
-            board[r_dest][f_dest] = board[r_src][f_src];
-            board[r_src][f_src] = '_';
+            move_from_to(&mut board, r_src, f_src, r_dest, f_dest)
         }
 
+        // find out all possible responses
         let mut possile_moves = Vec::new();
 
         for r in 0..8 {
@@ -77,9 +80,7 @@ fn main() {
                     }
                 }
             }
-        }
-
-        
+        }        
 
         if possile_moves.is_empty(){
             println!("cant move shit");
@@ -89,7 +90,12 @@ fn main() {
         let mut rng = rand::thread_rng();
         let possible_move = possile_moves.choose(&mut rng).unwrap();
 
-        board[possible_move.2][possible_move.3] = board[possible_move.0][possible_move.1];
-        board[possible_move.0][possible_move.1] = '_';
+        move_from_to(&mut board, possible_move.0, possible_move.1, possible_move.2, possible_move.3);
+    }
+
+    fn move_from_to(board: &mut Board, r_src: usize, f_src: usize, r_dest: usize, f_dest: usize)
+    {
+        board[r_dest][f_dest] = board[r_src][f_src];
+        board[r_src][f_src] = '_';
     }
 }
