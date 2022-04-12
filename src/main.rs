@@ -76,7 +76,10 @@ fn main() {
                 {
                     if r >= 1 && board[r - 1][f] == '_'
                     {
-                        possile_moves.push((r,f,r -1,f));
+                        possile_moves.push((r,f,r - 1,f));
+                        if r == 6 && board[r - 2][f] == '_' {
+                            possile_moves.push((r, f, r - 2, f));
+                        }
                     }
                 }
             }
