@@ -1,5 +1,5 @@
-use std::time::Duration;
-use std::thread::sleep;
+//use std::time::Duration;
+//use std::thread::sleep;
 use std::io::stdout;
 use std::io::Write;
 use rand::seq::SliceRandom;
@@ -40,7 +40,7 @@ fn main() {
             for square in rank {
                     print!("{} ", *square);
                     stdout().flush().unwrap();
-                    sleep(Duration::from_millis(2));
+                    // sleep(Duration::from_millis(1));
                 }
             println!();
         }
@@ -51,27 +51,27 @@ fn main() {
         std::io::stdin().read_line(&mut move_piece).unwrap();
         if move_piece.chars().nth(0).unwrap() == 'x' {
             break;
+        } else if move_piece.chars().count() >=4 {          
+            let mut f_src = move_piece.chars().nth(0).unwrap() as usize;
+            f_src -= 'a' as usize;
+            let r_src = (move_piece.chars().nth(1).unwrap().to_digit(10).unwrap() - 1) as usize;
+
+            let mut f_dest = move_piece.chars().nth(2).unwrap() as usize;
+            f_dest -= 'a' as usize;
+            let r_dest = (move_piece.chars().nth(3).unwrap().to_digit(10).unwrap() - 1) as usize;
+
+            board[r_dest][f_dest] = board[r_src][f_src];
+            board[r_src][f_src] = '_';
         }
-
-        let mut f_src = move_piece.chars().nth(0).unwrap() as usize;
-        f_src -= 'a' as usize;
-        let r_src = (move_piece.chars().nth(1).unwrap().to_digit(10).unwrap() - 1) as usize;
-
-        let mut f_dest = move_piece.chars().nth(2).unwrap() as usize;
-        f_dest -= 'a' as usize;
-        let r_dest = (move_piece.chars().nth(3).unwrap().to_digit(10).unwrap() - 1) as usize;
-
-        board[r_dest][f_dest] = board[r_src][f_src];
-        board[r_src][f_src] = '_';
 
         let mut possile_moves = Vec::new();
 
-        for r in 0..7 {
-            for f in 0..7 {
+        for r in 0..8 {
+            for f in 0..8 {
                 let piece = board[r][f];
                 if piece == 'p'
                 {
-                    if board[r - 1][f] == '_'
+                    if r >= 1 && board[r - 1][f] == '_'
                     {
                         possile_moves.push((r,f,r -1,f));
                     }
@@ -80,6 +80,11 @@ fn main() {
         }
 
         
+
+        if possile_moves.is_empty(){
+            println!("cant move shit");
+            continue;
+        }
 
         let mut rng = rand::thread_rng();
         let possible_move = possile_moves.choose(&mut rng).unwrap();
