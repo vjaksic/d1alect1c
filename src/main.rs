@@ -2,6 +2,7 @@ use std::time::Duration;
 use std::thread::sleep;
 use std::io::stdout;
 use std::io::Write;
+use rand::seq::SliceRandom;
 
 fn main() {
 
@@ -59,25 +60,31 @@ fn main() {
         let mut f_dest = move_piece.chars().nth(2).unwrap() as usize;
         f_dest -= 'a' as usize;
         let r_dest = (move_piece.chars().nth(3).unwrap().to_digit(10).unwrap() - 1) as usize;
-        
-        // decide if legal
-        let mut legal = false;
-        let piece = board[r_src][f_src];
-        if piece == 'P' {
-            if (r_dest == r_src + 1)  && (f_dest == f_src)
-            {
-                legal = true;
+
+        board[r_dest][f_dest] = board[r_src][f_src];
+        board[r_src][f_src] = '_';
+
+        let mut possile_moves = Vec::new();
+
+        for r in 0..7 {
+            for f in 0..7 {
+                let piece = board[r][f];
+                if piece == 'p'
+                {
+                    if board[r - 1][f] == '_'
+                    {
+                        possile_moves.push((r,f,r -1,f));
+                    }
+                }
             }
         }
 
-        if legal {
-            board[r_dest][f_dest] = board[r_src][f_src];
-            board[r_src][f_src] = '_';
-        }
-        else {
-            println!("ILLEGAL MOVE!")
-        }
+        
 
+        let mut rng = rand::thread_rng();
+        let possible_move = possile_moves.choose(&mut rng).unwrap();
 
+        board[possible_move.2][possible_move.3] = board[possible_move.0][possible_move.1];
+        board[possible_move.0][possible_move.1] = '_';
     }
 }
