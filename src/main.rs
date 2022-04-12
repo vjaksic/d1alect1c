@@ -2,31 +2,31 @@ use std::time::Duration;
 use std::thread::sleep;
 use std::io::stdout;
 use std::io::Write;
-use array2d::Array2D;
 
 fn main() {
-    let board = Array2D::filled_with('_', 8, 8);   
 
-    board[(0,0)] = 'R';
-    board[(0,0)]= 'N';
-    board[(0,0)] = 'B';
-    board[(0,0)]= 'Q';
-    board[(0,0)]= 'K';
-    board[5][0] = 'B';
-    board[6][0] = 'N';
-    board[7][0] = 'R';
+    let mut board: [[char; 8]; 8] = [['_'; 8]; 8];
+
+    board[0][0] = 'R';
+    board[0][1] = 'N';
+    board[0][2] = 'B';
+    board[0][3] = 'Q';
+    board[0][4] = 'K';
+    board[0][5] = 'B';
+    board[0][6] = 'N';
+    board[0][7] = 'R';
     for square in board[1].iter_mut()
     {
         *square = 'P';
     }
 
-    board[0][7] = 'r';
-    board[1][7] = 'n';
-    board[2][7] = 'b';
-    board[3][7] = 'q';
-    board[4][7] = 'k';
-    board[5][7] = 'b';
-    board[6][7] = 'n';
+    board[7][0] = 'r';
+    board[7][1] = 'n';
+    board[7][2] = 'b';
+    board[7][3] = 'q';
+    board[7][4] = 'k';
+    board[7][5] = 'b';
+    board[7][6] = 'n';
     board[7][7] = 'r';
     for square in board[6].iter_mut()
     {
