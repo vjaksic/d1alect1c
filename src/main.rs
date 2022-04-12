@@ -54,7 +54,7 @@ fn main() {
         std::io::stdin().read_line(&mut move_piece).unwrap();
         if move_piece.chars().nth(0).unwrap() == 'x' {
             break;
-        } else if move_piece.chars().count() >=4 {          
+        } else if move_piece.trim_end().chars().count() == 4 {          
             let mut f_src = move_piece.chars().nth(0).unwrap() as usize;
             f_src -= 'a' as usize;
             let r_src = (move_piece.chars().nth(1).unwrap().to_digit(10).unwrap() - 1) as usize;
@@ -83,7 +83,7 @@ fn main() {
         }        
 
         if possile_moves.is_empty(){
-            println!("cant move shit");
+            println!("cant move shit\n");
             continue;
         }
 
