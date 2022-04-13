@@ -68,6 +68,7 @@ fn main() {
 
         // find out all possible responses
         let mut possile_moves = Vec::new();
+        let rotator = vec![(1i8,0i8), (1,1), (0,1), (-1,1), (-1,0), (-1,-1), (0,-1), (1,-1)];
 
         for r in 0..8 {
             for f in 0..8 {
@@ -83,10 +84,26 @@ fn main() {
                     }
                 }
                 else if piece == 'k' {
-                    if (r < 7) && (is_empty(board[r + 1][f])) {
-                        possile_moves.push((r, f, r +1, f));
-                    }
-                    
+                    for direction in rotator.iter() {
+                        let dest_r = (r as i8 + direction.0) as usize;
+                        let dest_f = (f as i8 + direction.1) as usize;
+                        let rank_option = board.get_mut(dest_r);
+                        match rank_option {                            
+                            Some(rank) => {
+                                let dest_option = rank.get_mut(dest_f);
+                                match dest_option {
+                                    Some(dest) => {
+                                        if is_empty(*dest) || is_white(*dest) {
+                                            possile_moves.push((r, f, dest_r, dest_f));
+                                        }
+                                    },
+                                    None => {},
+                                }
+                            },
+                            None => {},
+                        }                        
+
+                    }                    
                 }
             }
         }        
@@ -109,12 +126,18 @@ fn move_from_to(board: &mut Board, r_src: usize, f_src: usize, r_dest: usize, f_
     board[r_src][f_src] = '_';
 }
 
-fn is_empty(square: char) -> bool{
+fn is_empty(square: char) -> bool {
     if square == '_' {
         return true;
     }
     else {
         return false;
     }
+}
 
+fn is_white(square: char) -> bool {
+    if is_empty(square) {
+        return false;
+    }
+    return square.is_uppercase();
 }
