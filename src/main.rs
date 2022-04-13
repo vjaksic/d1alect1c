@@ -74,13 +74,19 @@ fn main() {
                 let piece = board[r][f];
                 if piece == 'p'
                 {
-                    if r >= 1 && board[r - 1][f] == '_'
+                    if (r >= 1) && (board[r - 1][f] == '_')
                     {
                         possile_moves.push((r,f,r - 1,f));
                         if r == 6 && board[r - 2][f] == '_' {
                             possile_moves.push((r, f, r - 2, f));
                         }
                     }
+                }
+                else if piece == 'k' {
+                    if (r < 7) && (is_empty(board[r + 1][f])) {
+                        possile_moves.push((r, f, r +1, f));
+                    }
+                    
                 }
             }
         }        
@@ -95,10 +101,20 @@ fn main() {
 
         move_from_to(&mut board, possible_move.0, possible_move.1, possible_move.2, possible_move.3);
     }
+}
 
-    fn move_from_to(board: &mut Board, r_src: usize, f_src: usize, r_dest: usize, f_dest: usize)
-    {
-        board[r_dest][f_dest] = board[r_src][f_src];
-        board[r_src][f_src] = '_';
+fn move_from_to(board: &mut Board, r_src: usize, f_src: usize, r_dest: usize, f_dest: usize)
+{
+    board[r_dest][f_dest] = board[r_src][f_src];
+    board[r_src][f_src] = '_';
+}
+
+fn is_empty(square: char) -> bool{
+    if square == '_' {
+        return true;
     }
+    else {
+        return false;
+    }
+
 }
