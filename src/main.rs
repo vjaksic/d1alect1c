@@ -69,12 +69,12 @@ fn main() {
         // find out all possible responses
         let mut possile_moves = Vec::new();
         let rotator = vec![(1i8,0i8), (1,1), (0,1), (-1,1), (-1,0), (-1,-1), (0,-1), (1,-1)];
+        let rotator_knight = vec![(2i8,1i8), (1,2), (-1, 2), (-2, 1), (-2,-1), (-1,-2), (1,-2), (2,-1)];
 
         for r in 0..8 {
             for f in 0..8 {
                 let piece = board[r][f];
-                if piece == 'p'
-                {
+                if piece == 'p' {
                     if (r >= 1) && (board[r - 1][f] == '_')
                     {
                         possile_moves.push((r,f,r - 1,f));
@@ -102,7 +102,27 @@ fn main() {
                             },
                             None => {},
                         }                        
-
+                    }                    
+                }
+                else if piece == 'n' {
+                    for direction in rotator_knight.iter() {
+                        let dest_r = (r as i8 + direction.0) as usize;
+                        let dest_f = (f as i8 + direction.1) as usize;
+                        let rank_option = board.get_mut(dest_r);
+                        match rank_option {                            
+                            Some(rank) => {
+                                let dest_option = rank.get_mut(dest_f);
+                                match dest_option {
+                                    Some(dest) => {
+                                        if is_empty(*dest) || is_white(*dest) {
+                                            possile_moves.push((r, f, dest_r, dest_f));
+                                        }
+                                    },
+                                    None => {},
+                                }
+                            },
+                            None => {},
+                        }                        
                     }                    
                 }
             }
