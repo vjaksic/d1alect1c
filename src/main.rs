@@ -68,7 +68,7 @@ fn main() {
 
         // find out all possible responses
         let mut possile_moves = Vec::new();
-        let rotator = vec![(1i8,0i8), (1,1), (0,1), (-1,1), (-1,0), (-1,-1), (0,-1), (1,-1)];
+        let rotator = vec![(1i8,0i8), (0, 1), (-1,0),  (0,-1), (1,1), (-1,1), (-1,-1), (1,-1)];
         let rotator_knight = vec![(2i8,1i8), (1,2), (-1, 2), (-2, 1), (-2,-1), (-1,-2), (1,-2), (2,-1)];
 
         for r in 0..8 {
