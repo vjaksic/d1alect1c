@@ -7,8 +7,9 @@ use rand::seq::SliceRandom;
 
 type Board = [[char; 8]; 8];
 
-fn main() {
 
+fn initialize_board() -> Board
+{
     let mut board: Board = [['_'; 8]; 8];
 
     board[0][0] = 'R';
@@ -36,6 +37,12 @@ fn main() {
     {
         *square = 'p';
     }
+
+    return board;
+}
+
+fn main() {   
+    let mut board = initialize_board();
     
     loop {
         // draw board
@@ -67,7 +74,7 @@ fn main() {
         }
 
         // find out all possible responses
-        let mut possile_moves = Vec::new();
+        let mut possible_moves = Vec::new();
         let rotator = vec![(1i8,0i8), (0, 1), (-1,0),  (0,-1), (1,1), (-1,1), (-1,-1), (1,-1)];
         let rotator_knight = vec![(2i8,1i8), (1,2), (-1, 2), (-2, 1), (-2,-1), (-1,-2), (1,-2), (2,-1)];
 
@@ -77,9 +84,9 @@ fn main() {
                 if piece == 'p' {
                     if (r >= 1) && (board[r - 1][f] == '_')
                     {
-                        possile_moves.push((r,f,r - 1,f));
+                        possible_moves.push((r,f,r - 1,f));
                         if r == 6 && board[r - 2][f] == '_' {
-                            possile_moves.push((r, f, r - 2, f));
+                            possible_moves.push((r, f, r - 2, f));
                         }
                     }
                 }
@@ -94,7 +101,7 @@ fn main() {
                                 match dest_option {
                                     Some(dest) => {
                                         if is_empty(*dest) || is_white(*dest) {
-                                            possile_moves.push((r, f, dest_r, dest_f));
+                                            possible_moves.push((r, f, dest_r, dest_f));
                                         }
                                     },
                                     None => {},
@@ -115,7 +122,7 @@ fn main() {
                                 match dest_option {
                                     Some(dest) => {
                                         if is_empty(*dest) || is_white(*dest) {
-                                            possile_moves.push((r, f, dest_r, dest_f));
+                                            possible_moves.push((r, f, dest_r, dest_f));
                                         }
                                     },
                                     None => {},
@@ -128,13 +135,13 @@ fn main() {
             }
         }        
 
-        if possile_moves.is_empty(){
+        if possible_moves.is_empty(){
             println!("cant move shit\n");
             continue;
         }
 
         let mut rng = rand::thread_rng();
-        let possible_move = possile_moves.choose(&mut rng).unwrap();
+        let possible_move = possible_moves.choose(&mut rng).unwrap();
 
         move_from_to(&mut board, possible_move.0, possible_move.1, possible_move.2, possible_move.3);
     }
